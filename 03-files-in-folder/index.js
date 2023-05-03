@@ -10,7 +10,6 @@ fs.readdir(folder, { withFileTypes: true }, (err, files) => {
         inf = `${file.name.split('.')[0]} - ${path.extname(file.name).split('.')[1]} - ${stats.size.toString()}b`
         console.log(inf);
       })
-
     }
   });
 });
