@@ -12,7 +12,7 @@ async function copyDir(folder, projectFolder) {
       if (files) {
         files.forEach(file => {
           if (file.isFile()) {
-            console.log(file, 'delete')
+            // console.log(file, 'delete')
             rm(path.join(folder, file.name));
           }
           else {
@@ -28,7 +28,7 @@ async function copyDir(folder, projectFolder) {
     await fs.readdir(folder, { withFileTypes: true }, (err, files) => {
       if (files) {
         files.forEach(file => {
-          console.log(file, 'create')
+          // console.log(file, 'create')
           if (file.isFile()) {
             copyFile(path.join(folder, file.name), path.join(folderResult, file.name));
           } else {
