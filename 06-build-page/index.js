@@ -26,22 +26,27 @@ async function readFolder(componentFolder) {
 }
 
 async function buildPage() {
+  // Использовать скрипт из задания 04-copy-directory для переноса папки assets в папку project-dist
   await copyDir(join(__dirname, 'assets'), projectFolder)
-  await mergeStyle(join(__dirname, 'styles'), join(projectFolder, 'bundle.css'))
-  const htmlFile = await fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'));
-  await readFolder(componentFolder);
-  // Нахождение всех имён тегов в файле шаблона
-// Замена шаблонных тегов содержимым файлов-компонентов
-  await fs.readFile(templatePath, 'utf8', function (error, data) {
-    htmlFile.write(data.replace(/\{{([^}]+)\}}/gm, (key) => {
-      const componentKey = key.substring(2, key.length - 2);
-      return components[componentKey];
-    }));
-  });
+    .then(data => readFolder(componentFolder))
+    .then(async (data) => {
+      const htmlFile = await fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'));
+      await fs.readFile(templatePath, 'utf8', function (error, data) {
+        htmlFile.write(data.replace(/\{{([^}]+)\}}/gm, (key) => {
+          console.log('html')
+          const componentKey = key.substring(2, key.length - 2);
+          return components[componentKey];
+        }));
+      });
+    })
+  // const htmlFile = await fs.createWriteStream(path.join(__dirname, 'project-dist', 'index.html'));)
+  // Использовать скрипт написанный в задании 05-merge-styles для создания файла style.css
+  await mergeStyle(join(__dirname, 'styles'), join(projectFolder, 'style.css'))
+
 }
 
 buildPage().catch(console.error);
 
-// Использовать скрипт написанный в задании 05-merge-styles для создания файла style.css
 
-// Использовать скрипт из задания 04-copy-directory для переноса папки assets в папку project-dist
+
+
